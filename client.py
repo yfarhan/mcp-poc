@@ -10,9 +10,8 @@ from dotenv import load_dotenv
 
 load_dotenv()  # load environment variables from .env
 
-class MCPClientBase:
+class MCPClient:
     def __init__(self):
-        self.version = "0.0.0"
         self.session: Optional[ClientSession] = None
         self.exit_stack = AsyncExitStack()
 
@@ -49,7 +48,7 @@ class MCPClientBase:
         """Clean up resources"""
         await self.exit_stack.aclose()
 
-class MCPClient(MCPClientBase):
+class AnthropicLLM(MCPClient):
     def __init__(self):
         super().__init__()
         # Initialize session and client objects
@@ -176,7 +175,7 @@ async def main():
         print("Usage: python client.py <path_to_server_script>")
         sys.exit(1)
 
-    client = MCPClient()
+    client = AnthropicLLM()
     try:
         await client.connect_to_server(sys.argv[1])
         await client.chat_loop()
